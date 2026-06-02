@@ -37,7 +37,7 @@ resource "local_file" "private_key" {
   file_permission = "0400"
 }
 resource "aws_security_group" "web_sg2" {
-  name = "web-sg2"
+  name = "web_sg2"
 
   ingress {
     from_port   = 22
@@ -64,7 +64,7 @@ resource "aws_security_group" "web_sg2" {
 resource "aws_instance" "web" {
   ami                    = data.aws_ami.amazon_linux.id
   instance_type          = "t3.micro"
-  vpc_security_group_ids = [aws_security_group.web_sg.id]
+  vpc_security_group_ids = [aws_security_group.web_sg2.id]
 
   user_data = file("${path.module}/script.sh")
 
