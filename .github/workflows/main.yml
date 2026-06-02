@@ -49,12 +49,12 @@ jobs:
       # Deploy via SCP
       - name: Copy files to EC2
         run: |
-          scp -o StrictHostKeyChecking=no -i ec2-key.pem website/index.html ec2-user@${IP}:/tmp/
+          scp -o StrictHostKeyChecking=no -i terraform/ec2-key.pem website/index.html ec2-user@${IP}:/tmp/
 
       # Move file to nginx folder
       - name: Move to nginx
         run: |
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${IP} "
+          ssh -o StrictHostKeyChecking=no -i terraform/ec2-key.pem ec2-user@${IP} "
             sudo mv /tmp/index.html /usr/share/nginx/html/index.html &&
             sudo systemctl reload nginx
           "
