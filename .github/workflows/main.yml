@@ -55,6 +55,12 @@ jobs:
       - name: Move to nginx
         run: |
           ssh -o StrictHostKeyChecking=no -i terraform/ec2-key.pem ec2-user@${IP} "
-            sudo mv /tmp/index.html /usr/share/nginx/html/index.html &&
-            sudo systemctl reload nginx
+          echo '=== TMP ==='
+          ls -la /tmp
+
+          echo '=== NGINX ==='
+          ls -la /usr/share/nginx/html
+
+          sudo cp /tmp/index.html /usr/share/nginx/html/index.html
+          sudo systemctl reload nginx
           "
