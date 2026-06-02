@@ -51,6 +51,22 @@ jobs:
         run: |
           scp -o StrictHostKeyChecking=no -i terraform/ec2-key.pem website/index.html ec2-user@${IP}:/tmp/
 
+      - name: Wait for nginx
+        run: |
+          for i in {1..30}; do
+            ssh -o StrictHostKeyChecking=no -i terraform/ec2-key.pem ec2-user@${IP} "
+              systemctl status nginx >/dev/null 2>&1
+            " && exit 0
+
+            echo "Waiting for nginx..."
+            sleep 2
+          done
+
+          echo "Nginx never became ready"
+          exit 1
+
+
+
       # Move file to nginx folder
       - name: Move to nginx
         run: |
