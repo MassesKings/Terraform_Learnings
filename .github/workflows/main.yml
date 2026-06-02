@@ -19,8 +19,8 @@ jobs:
       - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ Secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ Secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-1
 
       # Terraform
@@ -49,15 +49,12 @@ jobs:
       # Deploy via SCP
       - name: Copy files to EC2
         run: |
-          echo "${{ Secrets.SSH_KEY }}" > key.pem
-          chmod 600 key.pem
-
-          scp -o StrictHostKeyChecking=no -i key.pem website/index.html ec2-user@${IP}:/tmp/
+          scp -o StrictHostKeyChecking=no -i ec2-key.pem website/index.html ec2-user@${IP}:/tmp/
 
       # Move file to nginx folder
       - name: Move to nginx
         run: |
-          ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@${IP} "
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${IP} "
             sudo mv /tmp/index.html /usr/share/nginx/html/index.html &&
             sudo systemctl reload nginx
           "
