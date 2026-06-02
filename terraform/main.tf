@@ -26,8 +26,8 @@ resource "tls_private_key" "ec2_key" {
   rsa_bits  = 4096
 }
 
-resource "aws_key_pair" "ec2_key" {
-  key_name   = "ec2-key"
+resource "aws_key_pair" "ec2_key2" {
+  key_name   = "ec2-key2"
   public_key = tls_private_key.ec2_key.public_key_openssh
 }
 
@@ -36,8 +36,8 @@ resource "local_file" "private_key" {
   content         = tls_private_key.ec2_key.private_key_pem
   file_permission = "0400"
 }
-resource "aws_security_group" "web_sg3" {
-  name = "web_sg3"
+resource "aws_security_group" "web_sg4" {
+  name = "web_sg4"
 
   ingress {
     from_port   = 22
@@ -64,7 +64,7 @@ resource "aws_security_group" "web_sg3" {
 resource "aws_instance" "web" {
   ami                    = data.aws_ami.amazon_linux.id
   instance_type          = "t3.micro"
-  vpc_security_group_ids = [aws_security_group.web_sg3.id]
+  vpc_security_group_ids = [aws_security_group.web_sg4.id]
 
   user_data = file("${path.module}/script.sh")
 
