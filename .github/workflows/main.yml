@@ -49,6 +49,8 @@ jobs:
       # Deploy via SCP
       - name: Copy files to EC2
         run: |
+          echo "Waiting for nginx..."
+          sleep 10
           scp -o StrictHostKeyChecking=no -i terraform/ec2-key.pem website/index.html ec2-user@${IP}:/tmp/
 
       - name: Wait for nginx
