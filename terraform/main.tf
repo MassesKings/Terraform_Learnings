@@ -37,7 +37,7 @@ resource "local_file" "private_key" {
   file_permission = "0400"
 }
 resource "aws_security_group" "web_sg2" {
-  name = "web-sg"
+  name = "web-sg2"
 
   ingress {
     from_port   = 22
